@@ -25,10 +25,8 @@ public class Mage implements Hero {
     @Override
     public void receiveDamage(int amount) {
         // TODO: enforce min 0
-        health -= amount;
-        if (health < 0) {
-            health = 0;
-        }
+        int dmg = Math.max(0, amount);
+        health = Math.max(0, health-dmg);
     }
 
     @Override

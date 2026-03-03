@@ -14,33 +14,44 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("=== RPG Battle Engine Demo ===\n");
+        System.out.println("=== HW3 Battle Engine Demo (Singleton + Adapter) ===\n");
 
-        // TODO: Create heroes and enemies
-        Warrior warrior = new Warrior("Arthas");
-        Mage mage = new Mage("Jaina");
-        Goblin goblin = new Goblin();
+        // ===== Create heroes =====
+        Warrior warrior = new Warrior("Arman");
+        Mage mage = new Mage("Asylbek");
 
-        // TODO: Wrap with adapters
-        List<Combatant> heroes = new ArrayList<>();
-        heroes.add(new HeroCombatantAdapter(warrior));
-        heroes.add(new HeroCombatantAdapter(mage));
+        // ===== Create enemies =====
+        Goblin goblin1 = new Goblin();
+        Goblin goblin2 = new Goblin();
+        Goblin goblin3 = new Goblin();
 
-        List<Combatant> enemies = new ArrayList<>();
-        enemies.add(new EnemyCombatantAdapter(goblin));
+        // ===== Wrap with adapters =====
+        List<Combatant> teamA = new ArrayList<>();
+        teamA.add(new HeroCombatantAdapter(warrior));
+        teamA.add(new HeroCombatantAdapter(mage));
 
-        // TODO: Demonstrate Singleton behavior
-        BattleEngine engineA = BattleEngine.getInstance();
-        BattleEngine engineB = BattleEngine.getInstance();
-        System.out.println("Same instance? " + (engineA == engineB));
+        List<Combatant> teamB = new ArrayList<>();
+        teamB.add(new EnemyCombatantAdapter(goblin1));
+        teamB.add(new EnemyCombatantAdapter(goblin2));
+        teamB.add(new EnemyCombatantAdapter(goblin3));
+
+        // ===== Demonstrate Singleton =====
+        BattleEngine engine1 = BattleEngine.getInstance();
+        BattleEngine engine2 = BattleEngine.getInstance();
+
+        System.out.println("Same BattleEngine instance? " + (engine1 == engine2));
         System.out.println();
 
-        // TODO: Run battle and print summary
-        engineA.setRandomSeed(42L);
-        EncounterResult result = engineA.runEncounter(heroes, enemies);
+        engine1.setRandomSeed(42L);
 
+        // ===== Run battle =====
+        EncounterResult result = engine1.runEncounter(teamA, teamB);
+
+        // ===== Print summary =====
         System.out.println("Winner: " + result.getWinner());
         System.out.println("Rounds: " + result.getRounds());
+        System.out.println("\n--- Battle Log ---");
+
         for (String line : result.getBattleLog()) {
             System.out.println(line);
         }
